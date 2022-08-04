@@ -31,26 +31,28 @@ function ntp_snmp_collect_nrpe ()
 printf "${Yellow} ===== Installaed NTP packages ====${NC}\n\n"
 rpm -qa | grep ntp-
 printf "${Yellow} ===== NTP service status ====${NC}\n\n"
-systemctl status ntpd --no-pager;echo;printf "${Cyan} NTP service is `systemctl is-enabled ntpd`${NC}\n\n"
+systemctl -a | grep ntpd.service;echo;printf "${Cyan} NTP service is `systemctl is-enabled ntpd`${NC}\n\n"
 printf "${Yellow} ===== NTP servers ====${NC}\n\n"
 grep server /etc/ntp.conf
 printf "${Yellow} ===== Installaed Chrony packages ====${NC}\n\n"
 rpm -qa | grep chrony
 printf "${Yellow} ===== Chrony service status ====${NC}\n\n"
-systemctl status chronyd --no-pager;echo;printf "${Cyan} Chrony service is `systemctl is-enabled chronyd`${NC}\n\n"
+systemctl -a | grep chronyd.service;echo;printf "${Cyan} Chrony service is `systemctl is-enabled chronyd`${NC}\n\n"
 printf "${Yellow} ===== Chrony servers ====${NC}\n\n"
 grep server /etc/chrony.conf
 printf "${Yellow} ===== Installaed SNMP packages ====${NC}\n\n"
 rpm -qa | grep net-snmp
 printf "${Yellow} ===== SNMP service status ====${NC}\n\n"
-systemctl status snmpd --no-pager;echo;printf "${Cyan} SNMP service is `systemctl is-enabled snmpd`${NC}\n\n"
+systemctl -a| grep snmpd.service;echo;printf "${Cyan} SNMP service is `systemctl is-enabled snmpd`${NC}\n\n"
 printf "${Yellow} ===== Installaed collectd packages ====${NC}\n\n"
-rpm -qa | grep collectd
+rpm -qa | grep collectd.service
 printf "${Yellow}===== collectd ===${NC}\n\n"
-systemctl status collectd --no-pager;printf "${Cyan} Collectd service is `systemctl is-enabled collectd`${NC}\n\n"; ls -lrt /opt/monitoring/graphite
+systemctl -a | grep collectd;printf "${Cyan} Collectd service is `systemctl is-enabled collectd`${NC}\n\n"; 
+printf "${Yellow}===== collectd graphile list ===${NC}\n\n"
+ls -lrt /opt/monitoring/graphite
 printf "${Yellow}===== nrpe ===${NC}\n\n"
-rpm -qa | grep nrpe
-systemctl status nrpe --no-pager;printf "${Cyan} NRPE service is `systemctl is-enabled nrpe`${NC}\n\n"
+rpm -qa | grep nrpe.service
+systemctl -a | grep nrpe.service;printf "${Cyan} NRPE service is `systemctl is-enabled nrpe`${NC}\n\n"
 }
 
 function centrify ()
@@ -88,7 +90,7 @@ cat /etc/passwd | egrep 'bash|ksh'
 printf "${Yellow}===== timezone ===${NC}\n\n"
 ls -lrt /etc/localtime;date
 printf "${Yellow}===== kdump ===${NC}\n\n"
-systemctl status kdump --no-pager;printf "${Cyan} KDUMP service is `systemctl is-enabled kdump`${NC}\n\n"
+systemctl -a | grep -w kdump.service;printf "${Cyan} KDUMP service is `systemctl is-enabled kdump`${NC}\n\n"
 
 }
 function continue ()
